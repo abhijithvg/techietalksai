@@ -26,3 +26,15 @@ $ docker run -p 8502:8502 localgpt-demo:v2
 Browse: http://localhost:8502
 
 
+v3: 
+
+$ cd v3
+
+> Build the docker image
+$ docker build -t localgpt-demo:v3 .
+
+> Run the container
+$ docker run -p 8503:8503 localgpt-demo:v3
+
+> Access the app
+Browse: http://localhost:8503
