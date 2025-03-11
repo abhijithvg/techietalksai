@@ -1,0 +1,14 @@
+v1:
+
+$ cd v1
+
+> Build the docker image
+$ docker build -t localgpt-demo:v1 .
+
+> Run the container
+$ docker run -p 8501:8501 localgpt-demo:v1
+
+> Access the app
+Browse: http://localhost:8501
+
+
