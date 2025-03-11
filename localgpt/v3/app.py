@@ -36,19 +36,15 @@ def web_search(query, max_results=3):
         return "Web search unavailable due to rate limits."
 
 # Function to check if response indicates uncertainty or outdated info
-def is_uncertain(response, prompt):
-    print("Called is_uncertain")
-    uncertain_phrases = [
-        "i don't know", "i'm not sure", "no information", "not aware", "out of date",
-        "we're still in the year 2023", "as of 2011", "too early to announce",
-        "not yet announced", "i don’t have access to", "as of now", "as of my knowledge cutoff"
-    ]
-    is_uncertain_text = any(phrase in response.lower() for phrase in uncertain_phrases) or len(response) < 30
-    current_year = "2025"
-    if current_year in prompt.lower() and current_year not in response.lower():
-        return True
-    return is_uncertain_text
-    # return False
+def is_uncertain(prompt, llm_response):
+    current_year = datetime.now().year
+    meta_prompt = f"Today is {current_year}. Given the question '{prompt}' and the response '{llm_response}', does this require information beyond your knowledge cutoff date? Answer with 'Yes' or 'No' only."
+    meta_response = ""
+    for chunk in ollama.chat(model="llama3", messages=[
+        {"role": "user", "content": meta_prompt}
+    ], stream=True):
+        meta_response += chunk['message']['content']
+    return "yes" in meta_response.lower()
 
 # Chat input
 if prompt := st.chat_input("What would you like to know?"):
@@ -68,7 +64,7 @@ if prompt := st.chat_input("What would you like to know?"):
             placeholder.markdown(initial_response)
 
         # Check if the initial response is uncertain
-        if is_uncertain(initial_response, prompt):
+        if is_uncertain(prompt, initial_response):
             with st.spinner("Local knowledge insufficient, searching the web..."):
                 # Perform web search for additional context
                 search_context = web_search(prompt)
