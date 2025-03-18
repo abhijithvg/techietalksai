@@ -109,7 +109,6 @@ else:
         start_time = time(0, 0)
         end_time = time(23, 59)
         search_query = ""  # Clear the search query
-        st.session_state["search_query"] = ""  # Reset the session state value
         st.session_state["reset_trigger"] = False
 
     # Apply date and time filters
