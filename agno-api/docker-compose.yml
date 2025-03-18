@@ -1,0 +1,29 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8511:8501"
+    volumes:
+      - ./frontend:/app
+    environment:
+      - API_KEY=my-super-secret-key-123
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./logs:/logs
+    environment:
+      - API_KEY=my-super-secret-key-123
+
+  log_viewer:
+    build: ./log_viewer
+    ports:
+      - "8512:8502"
+    volumes:
+      - ./log_viewer:/app
+      - ./logs:/logs

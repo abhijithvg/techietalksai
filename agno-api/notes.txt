@@ -1,0 +1,9 @@
+- To build and run the application:
+$ docker-compose up --build
+
+
+- To access the application:
+Browse:
+	For Frontend App: http://localhost:8511
+	For Log viewer: http://localhost:8512
+

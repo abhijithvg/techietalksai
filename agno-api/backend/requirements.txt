@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+sse-starlette
+agno
+ollama
+duckduckgo-search>=5.0.0  # Ensure a recent version with better defaults
