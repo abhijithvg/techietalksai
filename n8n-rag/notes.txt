@@ -1,0 +1,12 @@
+v1:
+
+$ cd v1
+
+> Build and run the application:
+$ docker-compose up -d
+
+> Access n8n app:
+Browse: http://localhost:5678
+
+> Access qdrant dashboard:
+Browse: http://localhost:6333
