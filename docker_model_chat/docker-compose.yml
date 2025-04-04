@@ -1,0 +1,11 @@
+services:
+  streamlit-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    environment:
+      - MODEL_RUNNER_URL=http://model-runner.docker.internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

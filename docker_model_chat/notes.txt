@@ -1,0 +1,23 @@
+To run:
+
+$ cd docker_model_chat
+
+> Check Docker Model Runner Status:
+$ docker model status 
+
+> Pull Docker Chat Model:
+$ docker model pull ai/llama3.2:latest
+$ docker model list
+
+> Run Docker Chat Model:
+$ docker model run ai/llama3.2 "What is 2 plus 2?"
+
+> Run Docker Chat Model (Interactive Mode):
+$ docker model run ai/llama3.2
+
+> Build and run the application:
+$ docker-compose up --build
+
+> Access frontend app:
+Browse: http://localhost:8501
+
