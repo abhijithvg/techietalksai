@@ -1,6 +1,6 @@
 v1:
 
-$ cd v1
+$ cd n8n-rag/v1
 
 > Build and run the application:
 $ docker-compose up -d
