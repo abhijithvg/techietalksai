@@ -2,12 +2,19 @@ import streamlit as st
 import requests
 import os
 import uuid
+from dotenv import load_dotenv  # Add this to load .env file
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Load NGROK_STATIC_URL from environment, with a fallback
+NGROK_STATIC_URL = os.getenv("NGROK_STATIC_URL", "n8n-auto:5678")
 
 # Configuration
 # N8N_BASE_URL = "http://n8n-auto:5678"  # Update if n8n is on a different host
 N8N_BASE_URL = f"https://{NGROK_STATIC_URL}"  # Update if n8n is on a different host
-IMPORT_WORKFLOW_ID = "1ea01307-31b7-44e1-9d74-cf4c63631767"  # Get from n8n workflow URL
-QUERY_WORKFLOW_ID = "644a955c-d357-41e6-a895-e6355fcc6b0f"    # Get from n8n workflow URL
+IMPORT_WORKFLOW_ID = "7f2bd688-12d4-4f17-a2e3-3e1bdc1cec85"  # Get from n8n workflow URL
+QUERY_WORKFLOW_ID = "9d633c22-64b8-49b9-8099-bd00da4d7959"    # Get from n8n workflow URL
 
 # N8N_PATH = "webhook-test"
 N8N_PATH = "webhook"

@@ -77,7 +77,8 @@ services:
       - n8n-auto
     environment:
       - N8N_BASE_URL=http://n8n-auto:5678
+      - NGROK_STATIC_URL=${NGROK_STATIC_URL}
     command: >
       sh -c "pip install --upgrade pip &&
-             pip install streamlit requests &&
+             pip install streamlit requests dotenv &&
              streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
