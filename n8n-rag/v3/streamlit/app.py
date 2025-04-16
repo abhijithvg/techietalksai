@@ -59,7 +59,7 @@ with upload_tab:
     st.header("Upload Documents to Qdrant")
     
     with st.form("upload_form"):
-        collection = st.text_input("Collection Name", value="Harry_Potter")
+        collection = st.text_input("Collection Name", value="wonders_of_world")
         uploaded_file = st.file_uploader("Choose a file", type=['txt', 'pdf', 'docx', 'csv'])
         submit_button = st.form_submit_button("Upload")
         
@@ -82,7 +82,7 @@ with query_tab:
     st.header("Query Qdrant Vector Store")
     
     with st.form("query_form"):
-        collection = st.text_input("Collection Name", value="Harry_Potter", key="query_collection")
+        collection = st.text_input("Collection Name", value="wonders_of_world", key="query_collection")
         query_text = st.text_area("Enter your query")
         limit = st.number_input("Results limit", min_value=1, max_value=20, value=5)
         submit_button = st.form_submit_button("Search")
