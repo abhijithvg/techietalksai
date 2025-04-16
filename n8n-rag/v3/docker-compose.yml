@@ -1,0 +1,83 @@
+# volumes:
+#   n8n_demo_storage:
+#   qdrant_demo_storage:
+volumes:
+  n8n_demo_storage:
+    external: true
+    name: v1_n8n_demo_storage  # Exact name of the existing volume
+  qdrant_demo_storage:
+    external: true
+    name: v1_qdrant_demo_storage  # Exact name of the existing volume
+
+networks:
+  aidemo:
+
+x-n8n: &service-n8n
+  image: n8nio/n8n:latest
+  networks: ['aidemo']
+  environment:
+    - N8N_DIAGNOSTICS_ENABLED=false
+    - N8N_PERSONALIZATION_ENABLED=false
+    - N8N_ENCRYPTION_KEY
+    - N8N_USER_MANAGEMENT_JWT_SECRET
+    - OLLAMA_HOST=host.docker.internal:11434
+    - WEBHOOK_URL=${WEBHOOK_URL}
+    - NGROK_STATIC_URL=${NGROK_STATIC_URL}
+    # - OLLAMA_HOST=ollama:11434
+
+services:
+  n8n-auto:
+    <<: *service-n8n
+    hostname: n8n-auto
+    container_name: n8n-auto
+    restart: unless-stopped
+    ports:
+      - 5678:5678
+    volumes:
+      - n8n_demo_storage:/home/node/.n8n
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok
+    networks: ['aidemo']
+    restart: unless-stopped
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}  # Add your ngrok authtoken here
+    command: "http n8n-auto:5678 --domain=${NGROK_STATIC_URL}"  # Tunnel to custom domain
+    ports:
+      - 4040:4040  # Expose ngrok web interface (optional)
+    depends_on:
+      - n8n-auto
+
+  qdrant:
+    image: qdrant/qdrant
+    hostname: qdrant
+    container_name: qdrant
+    networks: ['aidemo']
+    restart: unless-stopped
+    ports:
+      - 6333:6333
+    volumes:
+      - qdrant_demo_storage:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__ENABLE_DASHBOARD=true
+
+  streamlit:
+    image: python:3.9-slim
+    hostname: streamlit
+    container_name: streamlit
+    networks: ['aidemo']
+    restart: unless-stopped
+    ports:
+      - 8501:8501
+    working_dir: /app
+    volumes:
+      - ./streamlit:/app
+    depends_on:
+      - n8n-auto
+    environment:
+      - N8N_BASE_URL=http://n8n-auto:5678
+    command: >
+      sh -c "pip install --upgrade pip &&
+             pip install streamlit requests &&
+             streamlit run app.py --server.port=8501 --server.address=0.0.0.0"

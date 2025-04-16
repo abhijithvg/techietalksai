@@ -10,3 +10,24 @@ Browse: http://localhost:5678
 
 > Access qdrant dashboard:
 Browse: http://localhost:6333
+
+v3:
+
+$ cd v3
+
+> Build and run the application:
+$ docker-compose up -d
+
+> Access n8n app:
+Browse: http://localhost:5678
+[OR]
+Browse: YOUR_NGROK_STATIC_DOMAIN
+
+> Access ngrok web interface:
+Browse: http://localhost:4040
+
+> Access qdrant dashboard:
+Browse: http://localhost:6333
+
+> Access Streamlit frontend:
+Browse: http://localhost:8501
