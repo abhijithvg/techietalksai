@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #f3f4f6, #e5e7eb);
+    }
+    .form-container {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .input-field:focus {
+      ring: 2px solid #4b5563;
+      outline: none;
+    }
+    .error-message {
+      display: none;
+      color: #dc2626;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center font-sans">
+  <div class="form-container bg-white p-8 rounded-lg max-w-md w-full">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Contact Us</h1>
+    <form id="contactForm" class="space-y-4">
+      <div>
+        <label for="firstName" class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500">*</span></label>
+        <input type="text" id="firstName" name="firstName" class="input-field mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-500" required>
+        <p id="firstNameError" class="error-message">First Name is required.</p>
+      </div>
+      <div>
+        <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+        <input type="text" id="lastName" name="lastName" class="input-field mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-500">
+      </div>
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500">*</span></label>
+        <input type="email" id="email" name="email" class="input-field mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-500" required>
+        <p id="emailError" class="error-message">A valid Email Address is required.</p>
+      </div>
+      <div>
+        <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+        <input type="tel" id="phone" name="phone" class="input-field mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-500">
+      </div>
+      <div>
+        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+        <textarea id="message" name="message" rows="4" class="input-field mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-500"></textarea>
+      </div>
+      <button type="submit" class="w-full bg-gray-700 text-white p-2 rounded-md hover:bg-gray-800 transition duration-200">Submit</button>
+    </form>
+    <p id="formMessage" class="mt-4 text-center text-sm" style="display: none;"></p>
+  </div>
+  <script>
+    const form = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Reset error messages
+      document.getElementById('firstNameError').style.display = 'none';
+      document.getElementById('emailError').style.display = 'none';
+      formMessage.style.display = 'none';
+
+      // Get form data
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      // Validate required fields
+      let isValid = true;
+      if (!firstName) {
+        document.getElementById('firstNameError').style.display = 'block';
+        isValid = false;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Prepare JSON payload
+      const data = { firstName, lastName, email, phone, message };
+
+      try {
+        // Send POST request to dummy URL
+        const response = await fetch('https://hook.eu2.make.com/ae9fymb0xfln9u4cae6eoc2fneygmq79', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          formMessage.style.display = 'block';
+          formMessage.style.color = '#15803d';
+          formMessage.textContent = 'Thank you! Your message has been sent.';
+          form.reset();
+        } else {
+          throw new Error('Submission failed');
+        }
+      } catch (error) {
+        formMessage.style.display = 'block';
+        formMessage.style.color = '#dc2626';
+        formMessage.textContent = 'Oops! Something went wrong. Please try again.';
+      }
+    });
+  </script>
+</body>
+</html>
